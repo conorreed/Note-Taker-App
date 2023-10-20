@@ -1,8 +1,17 @@
 const express = require('express');
-const app = express();
 const path = require('path');
+const fs = require('fs');
 
-// Define routes
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware for handling JSON data
+app.use(express.json());
+
+// Serve static assets (e.g., CSS, JavaScript)
+app.use(express.static('public'));
+
+// HTML Routes
 app.get('/notes', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'notes.html'));
 });
@@ -11,25 +20,14 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-// ... Other route definitions
-
-// Start the server
-// const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
-const fs = require('fs');
-
-// Define a route to read and return all saved notes
+// API Routes
 app.get('/api/notes', (req, res) => {
   const data = JSON.parse(fs.readFileSync('db.json'));
   res.json(data);
 });
 
-// Define a route to receive and save new notes
 app.post('/api/notes', (req, res) => {
-  const newNote = req.body; // Assuming you are using body-parser middleware
+  const newNote = req.body;
   newNote.id = generateUniqueID(); // Implement this function to generate a unique ID
   const data = JSON.parse(fs.readFileSync('db.json'));
   data.push(newNote);
@@ -37,12 +35,20 @@ app.post('/api/notes', (req, res) => {
   res.json(newNote);
 });
 
-// ... Other route definitions
-
-// Ensure you have body-parser or another middleware to handle JSON data in your requests
+app.delete('/api/notes/:id', (req, res) => {
+  const idToDelete = req.params.id;
+  const data = JSON.parse(fs.readFileSync('db.json'));
+  const updatedData = data.filter((note) => note.id !== idToDelete);
+  fs.writeFileSync('db.json', JSON.stringify(updatedData, null, 2));
+  res.json({ message: 'Note deleted' });
+});
 
 // Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
+// Implement a function to generate a unique ID
+function generateUniqueID() {
+  // Your code to generate a unique ID goes here
+}
