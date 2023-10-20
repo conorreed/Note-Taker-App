@@ -1,15 +1,13 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid'); // Import the uuidv4 function
+const { v4: uuidv4 } = require('uuid'); 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware for handling JSON data
 app.use(express.json());
 
-// Serve static assets (e.g., CSS, JavaScript)
 app.use(express.static('public'));
 
 // HTML Routes
@@ -29,7 +27,7 @@ app.get('/api/notes', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
-  newNote.id = uuidv4(); // Generate a unique ID
+  newNote.id = uuidv4(); 
   const data = JSON.parse(fs.readFileSync('db.json'));
   data.push(newNote);
   fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
