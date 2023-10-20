@@ -11,24 +11,24 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'develop', 'public')));
 
-// HTML Routes
-app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, 'develop', 'public', 'notes.html'));
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'develop', 'public', 'index.html'));
-});
-
-
-
-const dbFilePath = path.join(__dirname, 'develop', 'db', 'db.json');
-
 // API Routes
 app.get('/api/notes', (req, res) => {
   const data = JSON.parse(fs.readFileSync(dbFilePath));
   res.json(data);
 });
+
+// HTML Routes, this one works
+app.get('/notes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'develop', 'public', 'notes.html'));
+});
+
+// fall back goes last, else shit don't work
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'develop', 'public', 'index.html'));
+});
+
+const dbFilePath = path.join(__dirname, 'Develop', 'db', 'db.json');
+console.log(dbFilePath);
 
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
