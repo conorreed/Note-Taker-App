@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 
-app.use(express.static(path.join(__dirname, 'develop', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
 app.get('/api/notes', (req, res) => {
@@ -19,15 +19,15 @@ app.get('/api/notes', (req, res) => {
 
 // HTML Routes, this one works
 app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, 'develop', 'public', 'notes.html'));
+  res.sendFile(path.join(__dirname, 'public', 'notes.html'));
 });
 
 // fall back goes last, else shit don't work
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'develop', 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const dbFilePath = path.join(__dirname, 'Develop', 'db', 'db.json');
+const dbFilePath = path.join(__dirname, 'db', 'db.json');
 console.log(dbFilePath);
 
 app.post('/api/notes', (req, res) => {
