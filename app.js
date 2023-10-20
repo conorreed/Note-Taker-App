@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid'); // Import the uuidv4 function
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,7 +29,7 @@ app.get('/api/notes', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
-  newNote.id = generateUniqueID(); // Implement this function to generate a unique ID
+  newNote.id = uuidv4(); // Generate a unique ID
   const data = JSON.parse(fs.readFileSync('db.json'));
   data.push(newNote);
   fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
@@ -47,8 +48,3 @@ app.delete('/api/notes/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// Implement a function to generate a unique ID
-function generateUniqueID() {
-  // Your code to generate a unique ID goes here
-}
