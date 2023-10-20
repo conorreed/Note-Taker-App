@@ -12,12 +12,13 @@ app.use(express.static('public'));
 
 // HTML Routes
 app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'notes.html'));
+  res.sendFile(path.join(__dirname, 'db', 'public', 'notes.html'));
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+  res.sendFile(path.join(__dirname, 'db', 'public', 'index.html'));
 });
+
 
 // API Routes
 app.get('/api/notes', (req, res) => {
