@@ -22,7 +22,7 @@ app.get('*', (req, res) => {
 
 
 
-const dbFilePath = path.join(__dirname, 'db', 'db.json');
+const dbFilePath = path.join(__dirname, 'develop', 'db', 'db.json');
 
 // API Routes
 app.get('/api/notes', (req, res) => {
